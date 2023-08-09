@@ -1,6 +1,5 @@
 package com.dudzinski.portfolio.infrastructure.config.consoleconfig;
 
-import com.dudzinski.portfolio.domain.client.ClientEntity;
 import com.dudzinski.portfolio.domain.client.ClientService;
 import com.dudzinski.portfolio.domain.client.RoleEntity;
 import com.dudzinski.portfolio.domain.client.RoleType;
@@ -10,8 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-
-import java.util.Optional;
 
 @Component
 @Slf4j
@@ -65,42 +62,32 @@ public class CustomConsoleRunner implements CommandLineRunner {
 
     private void setUpDefaultAdminAccount() {
         String adminUsername = "admin";
-        Optional<ClientEntity> adminAccount = clientService.findByUsername(adminUsername);
-        if (adminAccount.isEmpty()) {
-            log.info(String.format(NEW_USER_CREATING_INFO, ADMIN_STRING));
-            NewClientDTO newAdminRequest = NewClientDTO.builder()
-                    .externalId("111")
-                    .name("Marek")
-                    .surname("Dudzinski")
-                    .email("marekAdminUser@gmail.pl")
-                    .username(adminUsername)
-                    .phoneNumber("987654321")
-                    .password("qwerty")
-                    .build();
-            log.info(String.format(NEW_USER_CREATED_INFO, ADMIN_STRING));
-            clientService.createNewUser(newAdminRequest, RoleType.ADMIN);
-        } else {
-            log.info(String.format(NEW_USER_CREATING_ERROR, ADMIN_STRING));
-        }
+        log.info(String.format(NEW_USER_CREATING_INFO, ADMIN_STRING));
+        NewClientDTO newAdminRequest = NewClientDTO.builder()
+                .externalId("111")
+                .name("Marek")
+                .surname("Dudzinski")
+                .email("marekAdminUser@gmail.pl")
+                .username(adminUsername)
+                .phoneNumber("987654321")
+                .password("qwerty")
+                .build();
+        log.info(String.format(NEW_USER_CREATED_INFO, ADMIN_STRING));
+        clientService.createNewUser(newAdminRequest, RoleType.ADMIN);
     }
 
     private void setUpDefaultUserAccount() {
-        Optional<ClientEntity> userAccount = clientService.findByUsername("User1");
-        if (userAccount.isEmpty()) {
-            log.info(String.format(NEW_USER_CREATING_INFO, BASIC_USER_STRING));
-            NewClientDTO newUserRequest = NewClientDTO.builder()
-                    .externalId("222")
-                    .name("Marek")
-                    .surname("Dudzinski")
-                    .email("marekBasicUser@gmail.pl")
-                    .username("User1")
-                    .phoneNumber("123456789")
-                    .password("qwerty")
-                    .build();
-            log.info(String.format(NEW_USER_CREATED_INFO, BASIC_USER_STRING));
-            clientService.createNewUser(newUserRequest, RoleType.BASIC_USER);
-        } else {
-            log.info(String.format(NEW_USER_CREATING_ERROR, BASIC_USER_STRING));
-        }
+        log.info(String.format(NEW_USER_CREATING_INFO, BASIC_USER_STRING));
+        NewClientDTO newUserRequest = NewClientDTO.builder()
+                .externalId("222")
+                .name("Marek")
+                .surname("Dudzinski")
+                .email("marekBasicUser@gmail.pl")
+                .username("User1")
+                .phoneNumber("123456789")
+                .password("qwerty")
+                .build();
+        log.info(String.format(NEW_USER_CREATED_INFO, BASIC_USER_STRING));
+        clientService.createNewUser(newUserRequest, RoleType.BASIC_USER);
     }
 }

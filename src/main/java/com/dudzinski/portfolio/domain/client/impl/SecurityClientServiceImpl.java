@@ -19,21 +19,24 @@ public class SecurityClientServiceImpl implements SecurityClientService {
 
     private final ClientRepository clientRepository;
 
+    private static final String ROLE_STRING = "ROLE_";
+
     @Override
-    public CustomUserDetail findUserByUsername(String username) {
+    public CustomUserDetail findUserDetailsByUsername(String username) {
         return loadUserByUsername(username);
     }
 
     @Override
     public CustomUserDetail loadUserByUsername(String s) throws UsernameNotFoundException {
-        ClientEntity clientEntity = clientRepository.findByLogin(s).orElseThrow(() -> new IllegalArgumentException("Something went wrong"));
-
+        ClientEntity clientEntity = clientRepository.findByLogin(s);
         return new CustomUserDetail(clientEntity.getLogin(), clientEntity.getPassword(), getAuthority(clientEntity), clientEntity.getExternalId());
     }
 
     private Set<SimpleGrantedAuthority> getAuthority(ClientEntity clientEntity) {
         Set<SimpleGrantedAuthority> authorities = new HashSet<>();
-        clientEntity.getRoleEntities().forEach(role -> authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName())));
+        clientEntity.getRoleEntities()
+                .forEach(role -> authorities.add(new SimpleGrantedAuthority(ROLE_STRING + role.getName()))
+                );
         return authorities;
     }
 }

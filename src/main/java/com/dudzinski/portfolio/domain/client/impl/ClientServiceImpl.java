@@ -17,8 +17,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -48,11 +46,6 @@ class ClientServiceImpl implements ClientService {
     @Override
     public void register(String login, String password) {
         //TODO IMPLEMENT ME
-    }
-
-    @Override
-    public Optional<ClientEntity> findByUsername(String login) {
-        return clientRepository.findByLogin(login);
     }
 
     @Override
