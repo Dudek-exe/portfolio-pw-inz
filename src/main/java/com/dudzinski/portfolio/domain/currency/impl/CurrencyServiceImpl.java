@@ -1,6 +1,7 @@
 package com.dudzinski.portfolio.domain.currency.impl;
 
-import com.dudzinski.portfolio.application.currency.dto.NewCurrencyResponseDTO;
+import com.dudzinski.portfolio.application.currency.dto.CurrencyResponseDTO;
+import com.dudzinski.portfolio.application.currency.mapper.CurrencyMapper;
 import com.dudzinski.portfolio.domain.currency.CurrencyEntity;
 import com.dudzinski.portfolio.domain.currency.CurrencyService;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ import java.util.Optional;
 class CurrencyServiceImpl implements CurrencyService {
 
     private final CurrencyRepository currencyRepository;
+    private final CurrencyMapper currencyMapper;
 
     @Override
     public CurrencyEntity createNewCurrency(String name,
@@ -28,14 +30,14 @@ class CurrencyServiceImpl implements CurrencyService {
     }
 
     @Override
-    public Page<NewCurrencyResponseDTO> findAll(String name, String code, int start, int end) {
+    public Page<CurrencyResponseDTO> findAll(String name, String code, int start, int end) {
         int size = end - start;
         int pageNumber = ((end / size) - 1);
 
         Pageable pageable = PageRequest.of(pageNumber, size);
 
         if (Objects.isNull(name) && Objects.isNull(code)) {
-            return getAll(pageable);
+            return currencyRepository.findAll(pageable).map(currencyMapper::toCurrencyResponseDTO);
         }
 
         if (Objects.isNull(name)) {
@@ -48,23 +50,19 @@ class CurrencyServiceImpl implements CurrencyService {
     }
 
     @Override
-    public Page<NewCurrencyResponseDTO> getAll(Pageable pageable) {
-        return currencyRepository.findAll(pageable).map(NewCurrencyResponseDTO::from);
+    public Page<CurrencyResponseDTO> findByCodeContainsIgnoreCase(String code, Pageable pageable) {
+        return currencyRepository.findAllByCodeContainsIgnoreCase(code, pageable).map(currencyMapper::toCurrencyResponseDTO);
     }
 
     @Override
-    public Page<NewCurrencyResponseDTO> findByCodeContainsIgnoreCase(String code, Pageable pageable) {
-        return currencyRepository.findAllByCodeContainsIgnoreCase(code, pageable).map(NewCurrencyResponseDTO::from);
+    public Page<CurrencyResponseDTO> findAllByNameContainsIgnoreCase(String name, Pageable pageable) {
+        return currencyRepository.findByNameContainsIgnoreCase(name, pageable).map(currencyMapper::toCurrencyResponseDTO);
     }
 
     @Override
-    public Page<NewCurrencyResponseDTO> findAllByNameContainsIgnoreCase(String name, Pageable pageable) {
-        return currencyRepository.findByNameContainsIgnoreCase(name, pageable).map(NewCurrencyResponseDTO::from);
-    }
-
-    @Override
-    public Page<NewCurrencyResponseDTO> findAllByNameAndCodeContainsIgnoreCase(String name, String code, Pageable pageable) {
-        return currencyRepository.findAllByNameContainsIgnoreCaseAndCodeContainsIgnoreCase(name, code, pageable).map(NewCurrencyResponseDTO::from);
+    public Page<CurrencyResponseDTO> findAllByNameAndCodeContainsIgnoreCase(String name, String code, Pageable pageable) {
+        return currencyRepository.findAllByNameContainsIgnoreCaseAndCodeContainsIgnoreCase(name, code, pageable)
+                .map(currencyMapper::toCurrencyResponseDTO);
     }
 
     @Override

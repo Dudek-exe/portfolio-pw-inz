@@ -23,12 +23,10 @@ public class NbpApiImpl implements NbpApi {
         this.currencyService = currencyService;
     }
 
-
     @Override
     public NbpCurrencyTable getNewestTable() {
 
-        NbpCurrencyTable[] tableFromApi = restTemplate
-                .getForObject(NbpApiConstants.NBP_URL, NbpCurrencyTable[].class);
+        NbpCurrencyTable[] tableFromApi = restTemplate.getForObject(NbpApiConstants.NBP_URL, NbpCurrencyTable[].class);
 
         if (Objects.nonNull(tableFromApi)) {
             tableFromApi[0].getRates()
