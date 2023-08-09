@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -30,10 +31,14 @@ public class CurrencyEntity {
     @Column(name = "code")
     private String code;
 
-    public CurrencyEntity(String name, BigDecimal rate, String code) {
+    @Column(name = "date")
+    private LocalDate date;
+
+    public CurrencyEntity(String name, BigDecimal rate, String code, LocalDate date) {
         this.name = name;
         this.rate = rate;
         this.code = code.toUpperCase();
+        this.date = date;
     }
 
 }

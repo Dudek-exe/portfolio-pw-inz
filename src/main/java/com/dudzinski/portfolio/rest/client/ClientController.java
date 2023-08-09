@@ -4,7 +4,6 @@ import com.dudzinski.portfolio.application.client.ClientFacade;
 import com.dudzinski.portfolio.application.client.dto.ClientLoginRequestDTO;
 import com.dudzinski.portfolio.application.client.dto.ClientRegisterRequestDTO;
 import com.dudzinski.portfolio.domain.client.dto.LoginResponseDTO;
-import com.dudzinski.portfolio.rest.ControllerConstants;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = ControllerConstants.RESOURCE_LOGIN)
+@RequestMapping(value = ClientControllerConstants.RESOURCE_LOGIN)
 class ClientController {
 
     private final ClientFacade clientFacade;

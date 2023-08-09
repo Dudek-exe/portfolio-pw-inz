@@ -1,14 +1,16 @@
 package com.dudzinski.portfolio.domain.cryptocurrency.impl;
 
 import com.dudzinski.portfolio.application.cryptocurrency.dto.CryptoCurrencyResponseDTO;
+import com.dudzinski.portfolio.application.cryptocurrency.dto.CryptoCurrencySearchParamsDTO;
 import com.dudzinski.portfolio.application.cryptocurrency.mapper.CryptoCurrencyMapper;
 import com.dudzinski.portfolio.domain.cryptocurrency.CryptoCurrencyEntity;
 import com.dudzinski.portfolio.domain.cryptocurrency.CryptoCurrencyService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -19,18 +21,24 @@ class CryptoCurrencyServiceImpl implements CryptoCurrencyService {
     private final CryptoCurrencyMapper cryptoCurrencyMapper;
 
     @Override
-    public List<CryptoCurrencyResponseDTO> findAll(String name, String code) {
+    public Page<CryptoCurrencyResponseDTO> findAll(CryptoCurrencySearchParamsDTO searchParamsDTO) {
 
-        if (Objects.isNull(name) && Objects.isNull(code)) {
-            return getAll();
+        if (Objects.isNull(searchParamsDTO.getName()) && Objects.isNull(searchParamsDTO.getCode())) {
+            return cryptoCurrencyRepository.findAll(searchParamsDTO.getPageable())
+                    .map(cryptoCurrencyMapper::toCryptoCurrencyResponseDTO);
+
         }
-        if (Objects.isNull(name)) {
-            return findAllByCodeContainsIgnoreCase(code);
+        if (Objects.isNull(searchParamsDTO.getName())) {
+            return findAllByCodeContainsIgnoreCase(searchParamsDTO.getCode(), searchParamsDTO.getPageable());
         }
-        if (Objects.isNull(code)) {
-            return findAllByNameContainsIgnoreCase(name);
+        if (Objects.isNull(searchParamsDTO.getCode())) {
+            return findAllByNameContainsIgnoreCase(searchParamsDTO.getName(), searchParamsDTO.getPageable());
         }
-        return findAllByNameContainsIgnoreCaseAndCodeContainsIgnoreCase(name, code);
+        return findAllByNameContainsIgnoreCaseAndCodeContainsIgnoreCase(
+                searchParamsDTO.getName(),
+                searchParamsDTO.getCode(),
+                searchParamsDTO.getPageable()
+        );
     }
 
     @Override
@@ -44,27 +52,18 @@ class CryptoCurrencyServiceImpl implements CryptoCurrencyService {
         cryptoCurrencyRepository.save(cryptoCurrency);
     }
 
-    private List<CryptoCurrencyResponseDTO> findAllByNameContainsIgnoreCaseAndCodeContainsIgnoreCase(String name, String code) {
-        return cryptoCurrencyRepository.findAllByNameContainsIgnoreCaseAndCodeContainsIgnoreCase(name, code).stream()
-                .map(cryptoCurrencyMapper::toCryptoCurrencyResponseDTO)
-                .toList();
+    private Page<CryptoCurrencyResponseDTO> findAllByNameContainsIgnoreCaseAndCodeContainsIgnoreCase(String name, String code, Pageable pageable) {
+        return cryptoCurrencyRepository.findAllByNameContainsIgnoreCaseAndCodeContainsIgnoreCase(name, code, pageable)
+                .map(cryptoCurrencyMapper::toCryptoCurrencyResponseDTO);
     }
 
-    private List<CryptoCurrencyResponseDTO> findAllByNameContainsIgnoreCase(String name) {
-        return cryptoCurrencyRepository.findAllByNameContainsIgnoreCase(name).stream()
-                .map(cryptoCurrencyMapper::toCryptoCurrencyResponseDTO)
-                .toList();
+    private Page<CryptoCurrencyResponseDTO> findAllByNameContainsIgnoreCase(String name, Pageable pageable) {
+        return cryptoCurrencyRepository.findAllByNameContainsIgnoreCase(name, pageable)
+                .map(cryptoCurrencyMapper::toCryptoCurrencyResponseDTO);
     }
 
-    private List<CryptoCurrencyResponseDTO> findAllByCodeContainsIgnoreCase(String code) {
-        return cryptoCurrencyRepository.findAllByCodeContainsIgnoreCase(code).stream()
-                .map(cryptoCurrencyMapper::toCryptoCurrencyResponseDTO)
-                .toList();
-    }
-
-    private List<CryptoCurrencyResponseDTO> getAll() {
-        return cryptoCurrencyRepository.findAll().stream()
-                .map(cryptoCurrencyMapper::toCryptoCurrencyResponseDTO)
-                .toList();
+    private Page<CryptoCurrencyResponseDTO> findAllByCodeContainsIgnoreCase(String code, Pageable pageable) {
+        return cryptoCurrencyRepository.findAllByCodeContainsIgnoreCase(code, pageable)
+                .map(cryptoCurrencyMapper::toCryptoCurrencyResponseDTO);
     }
 }

@@ -2,9 +2,9 @@ package com.dudzinski.portfolio.domain.cryptocurrency.impl;
 
 import com.dudzinski.portfolio.domain.cryptocurrency.CryptoCurrencyEntity;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
@@ -12,24 +12,24 @@ class CryptoCurrencyRepository {
 
     private final CryptoCurrencyJpaRepository cryptoCurrencyJpaRepository;
 
-    CryptoCurrencyEntity save(CryptoCurrencyEntity cryptoCurrencyEntity) {
-        return cryptoCurrencyJpaRepository.save(cryptoCurrencyEntity);
+    void save(CryptoCurrencyEntity cryptoCurrencyEntity) {
+        cryptoCurrencyJpaRepository.save(cryptoCurrencyEntity);
     }
 
-    List<CryptoCurrencyEntity> findAll() {
-        return cryptoCurrencyJpaRepository.findAll();
+    Page<CryptoCurrencyEntity> findAll(Pageable pageable) {
+        return cryptoCurrencyJpaRepository.findAll(pageable);
     }
 
-    List<CryptoCurrencyEntity> findAllByNameContainsIgnoreCaseAndCodeContainsIgnoreCase(String name, String code) {
-        return cryptoCurrencyJpaRepository.findAllByNameContainsIgnoreCaseAndCodeContainsIgnoreCase(name, code);
+    Page<CryptoCurrencyEntity> findAllByNameContainsIgnoreCaseAndCodeContainsIgnoreCase(String name, String code, Pageable pageable) {
+        return cryptoCurrencyJpaRepository.findAllByNameContainsIgnoreCaseAndCodeContainsIgnoreCase(name, code, pageable);
     }
 
-    List<CryptoCurrencyEntity> findAllByNameContainsIgnoreCase(String name) {
-        return cryptoCurrencyJpaRepository.findAllByNameContainsIgnoreCase(name);
+    Page<CryptoCurrencyEntity> findAllByNameContainsIgnoreCase(String name, Pageable pageable) {
+        return cryptoCurrencyJpaRepository.findAllByNameContainsIgnoreCase(name, pageable);
     }
 
-    List<CryptoCurrencyEntity> findAllByCodeContainsIgnoreCase(String code) {
-        return cryptoCurrencyJpaRepository.findAllByCodeContainsIgnoreCase(code);
+    Page<CryptoCurrencyEntity> findAllByCodeContainsIgnoreCase(String code, Pageable pageable) {
+        return cryptoCurrencyJpaRepository.findAllByCodeContainsIgnoreCase(code, pageable);
     }
 
 }

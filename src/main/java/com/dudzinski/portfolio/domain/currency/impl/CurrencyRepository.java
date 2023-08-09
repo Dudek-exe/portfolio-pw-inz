@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Repository
@@ -14,12 +15,12 @@ class CurrencyRepository {
 
     private final CurrencyJpaRepository currencyJpaRepository;
 
-    CurrencyEntity save(CurrencyEntity currencyEntity) {
-        return currencyJpaRepository.save(currencyEntity);
+    void save(CurrencyEntity currencyEntity) {
+        currencyJpaRepository.save(currencyEntity);
     }
 
-    Optional<CurrencyEntity> findByCodeIgnoreCase(String code) {
-        return currencyJpaRepository.findByCodeIgnoreCase(code);
+    Optional<CurrencyEntity> findByCodeIgnoreCase(String code, LocalDate date) {
+        return currencyJpaRepository.findByCodeAndDateIgnoreCase(code, date);
     }
 
     Page<CurrencyEntity> findAll(Pageable pageable) {

@@ -1,6 +1,7 @@
 package com.dudzinski.portfolio.application.currency;
 
 import com.dudzinski.portfolio.application.currency.dto.CurrencyResponseDTO;
+import com.dudzinski.portfolio.application.currency.dto.CurrencySearchParamsDTO;
 import com.dudzinski.portfolio.application.currency.dto.NewCurrencyRequestDTO;
 import com.dudzinski.portfolio.domain.currency.CurrencyService;
 import lombok.RequiredArgsConstructor;
@@ -14,10 +15,10 @@ public class CurrencyFacade {
     private final CurrencyService currencyService;
 
     public void createNewCurrency(NewCurrencyRequestDTO dto) {
-        currencyService.createNewCurrency(dto.getName(), dto.getRate(), dto.getCode());
+        currencyService.createNewCurrency(dto.getName(), dto.getRate(), dto.getCode(), dto.getDate());
     }
 
-    public Page<CurrencyResponseDTO> findAll(String name, String code, int start, int end) {
-        return currencyService.findAll(name, code, start, end);
+    public Page<CurrencyResponseDTO> search(CurrencySearchParamsDTO currencySearchParamsDTO) {
+        return currencyService.findAll(currencySearchParamsDTO);
     }
 }

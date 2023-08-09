@@ -1,16 +1,17 @@
 package com.dudzinski.portfolio.domain.currency.impl;
 
 import com.dudzinski.portfolio.application.currency.dto.CurrencyResponseDTO;
+import com.dudzinski.portfolio.application.currency.dto.CurrencySearchParamsDTO;
 import com.dudzinski.portfolio.application.currency.mapper.CurrencyMapper;
 import com.dudzinski.portfolio.domain.currency.CurrencyEntity;
 import com.dudzinski.portfolio.domain.currency.CurrencyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -24,39 +25,39 @@ class CurrencyServiceImpl implements CurrencyService {
     @Override
     public void createNewCurrency(String name,
                                   String rate,
-                                  String code) {
-        CurrencyEntity newCurrencyEntity = new CurrencyEntity(name, new BigDecimal(rate), code);
+                                  String code,
+                                  LocalDate date) {
+        CurrencyEntity newCurrencyEntity = new CurrencyEntity(name, new BigDecimal(rate), code, date);
         currencyRepository.save(newCurrencyEntity);
     }
 
     @Override
-    public Page<CurrencyResponseDTO> findAll(String name, String code, int start, int end) {
-        Pageable pageable = preparePageable(start, end);
+    public Page<CurrencyResponseDTO> findAll(CurrencySearchParamsDTO currencySearchParamsDTO) {
 
-        if (Objects.isNull(name) && Objects.isNull(code)) {
-            return currencyRepository.findAll(pageable).map(currencyMapper::toCurrencyResponseDTO);
+        if (Objects.isNull(currencySearchParamsDTO.getName()) && Objects.isNull(currencySearchParamsDTO.getCode())) {
+            return currencyRepository.findAll(currencySearchParamsDTO.getPageable()).map(currencyMapper::toCurrencyResponseDTO);
         }
 
-        if (Objects.isNull(name)) {
-            return findByCodeContainsIgnoreCase(code, pageable);
+        if (Objects.isNull(currencySearchParamsDTO.getName())) {
+            return findByCodeContainsIgnoreCase(currencySearchParamsDTO.getCode(), currencySearchParamsDTO.getPageable());
         }
-        if (Objects.isNull(code)) {
-            return findAllByNameContainsIgnoreCase(name, pageable);
+        if (Objects.isNull(currencySearchParamsDTO.getCode())) {
+            return findAllByNameContainsIgnoreCase(currencySearchParamsDTO.getName(), currencySearchParamsDTO.getPageable());
         }
-        return findAllByNameAndCodeContainsIgnoreCase(name, code, pageable);
+        return findAllByNameAndCodeContainsIgnoreCase(currencySearchParamsDTO.getName(), currencySearchParamsDTO.getCode(), currencySearchParamsDTO.getPageable());
     }
 
     @Override
-    public void updateCurrency(String name, Double rate, String code) {
+    public void updateCurrency(String name, Double rate, String code, LocalDate date) {
 
-        Optional<CurrencyEntity> optionalCurrency = currencyRepository.findByCodeIgnoreCase(code);
+        Optional<CurrencyEntity> optionalCurrency = currencyRepository.findByCodeIgnoreCase(code, date);
 
         if (optionalCurrency.isPresent()) {
             CurrencyEntity currencyEntity = optionalCurrency.get();
             currencyEntity.setRate(BigDecimal.valueOf(rate));
             currencyRepository.save(currencyEntity);
         } else {
-            CurrencyEntity newCurrencyEntity = new CurrencyEntity(name, BigDecimal.valueOf(rate), code);
+            CurrencyEntity newCurrencyEntity = new CurrencyEntity(name, BigDecimal.valueOf(rate), code, date);
             currencyRepository.save(newCurrencyEntity);
         }
     }
@@ -73,12 +74,5 @@ class CurrencyServiceImpl implements CurrencyService {
     private Page<CurrencyResponseDTO> findAllByNameAndCodeContainsIgnoreCase(String name, String code, Pageable pageable) {
         return currencyRepository.findAllByNameContainsIgnoreCaseAndCodeContainsIgnoreCase(name, code, pageable)
                 .map(currencyMapper::toCurrencyResponseDTO);
-    }
-
-    private Pageable preparePageable(int start, int end) {
-        int size = end - start;
-        int pageNumber = ((end / size) - 1);
-
-        return PageRequest.of(pageNumber, size);
     }
 }

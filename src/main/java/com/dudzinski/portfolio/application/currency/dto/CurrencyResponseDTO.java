@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -18,5 +19,7 @@ public class CurrencyResponseDTO {
     private final BigDecimal rate;
 
     private final String code;
+
+    private final LocalDate date;
 
 }

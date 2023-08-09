@@ -1,21 +1,20 @@
 package com.dudzinski.portfolio.domain.cryptocurrency.impl;
 
 import com.dudzinski.portfolio.domain.cryptocurrency.CryptoCurrencyEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
 import java.util.Optional;
 
 interface CryptoCurrencyJpaRepository extends JpaRepository<CryptoCurrencyEntity, Long> {
 
-    Optional<CryptoCurrencyEntity> findByCodeIgnoreCase(String code);
+    Page<CryptoCurrencyEntity> findAllByNameContainsIgnoreCaseAndCodeContainsIgnoreCase(String name, String code, Pageable pageable);
 
-    List<CryptoCurrencyEntity> findAllByNameContainsIgnoreCaseAndCodeContainsIgnoreCase(String name, String code);
+    Page<CryptoCurrencyEntity> findAllByNameContainsIgnoreCase(String name, Pageable pageable);
 
-    List<CryptoCurrencyEntity> findAllByNameContainsIgnoreCase(String name);
+    Page<CryptoCurrencyEntity> findAllByCodeContainsIgnoreCase(String code, Pageable pageable);
 
-    List<CryptoCurrencyEntity> findAllByCodeContainsIgnoreCase(String code);
-
-    Optional<CryptoCurrencyEntity> findById(Long Id);
+    Optional<CryptoCurrencyEntity> findById(Long id);
 
 }

@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -18,6 +19,8 @@ public class NbpCurrency implements Serializable {
     private String code;
 
     private Double mid;
+
+    private LocalDate date;
 
     @Override
     public String toString() {
