@@ -3,8 +3,8 @@ package com.dudzinski.portfolio.rest.cryptocurrency;
 import com.dudzinski.portfolio.application.cryptocurrency.CryptoCurrencyFacade;
 import com.dudzinski.portfolio.application.cryptocurrency.dto.CryptoCurrencyResponseDTO;
 import com.dudzinski.portfolio.application.cryptocurrency.dto.NewCryptoCurrencyRequestDTO;
-import com.dudzinski.portfolio.domain.cryptocurrency.CryptoCurrencyEntity;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,8 +28,8 @@ class CryptoCurrencyController {
     @PreAuthorize("hasAnyRole(T(com.dudzinski.portfolio.domain.client.RoleType).BASIC_USER.name(),"
             + "T(com.dudzinski.portfolio.domain.client.RoleType).ADMIN.name())")
     @PostMapping
-    CryptoCurrencyEntity save(@RequestBody NewCryptoCurrencyRequestDTO cryptoCurrencyRequestDTO) {
-        return cryptoCurrencyFacade.createNewCryptoCurrency(cryptoCurrencyRequestDTO);
+    ResponseEntity<Void> save(@RequestBody NewCryptoCurrencyRequestDTO cryptoCurrencyRequestDTO) {
+        cryptoCurrencyFacade.createNewCryptoCurrency(cryptoCurrencyRequestDTO);
+        return ResponseEntity.noContent().build();
     }
-
 }

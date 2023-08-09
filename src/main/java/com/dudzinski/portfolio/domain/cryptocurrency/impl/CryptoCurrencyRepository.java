@@ -5,11 +5,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class CryptoCurrencyRepository {
+class CryptoCurrencyRepository {
 
     private final CryptoCurrencyJpaRepository cryptoCurrencyJpaRepository;
 
@@ -19,10 +18,6 @@ public class CryptoCurrencyRepository {
 
     List<CryptoCurrencyEntity> findAll() {
         return cryptoCurrencyJpaRepository.findAll();
-    }
-
-    Optional<CryptoCurrencyEntity> findByCodeIgnoreCase(String code) {
-        return cryptoCurrencyJpaRepository.findByCodeIgnoreCase(code);
     }
 
     List<CryptoCurrencyEntity> findAllByNameContainsIgnoreCaseAndCodeContainsIgnoreCase(String name, String code) {
@@ -35,10 +30,6 @@ public class CryptoCurrencyRepository {
 
     List<CryptoCurrencyEntity> findAllByCodeContainsIgnoreCase(String code) {
         return cryptoCurrencyJpaRepository.findAllByCodeContainsIgnoreCase(code);
-    }
-
-    Optional<CryptoCurrencyEntity> findById(Long id) {
-        return cryptoCurrencyJpaRepository.findById(id);
     }
 
 }

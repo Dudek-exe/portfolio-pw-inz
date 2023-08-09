@@ -34,39 +34,35 @@ class CryptoCurrencyServiceImpl implements CryptoCurrencyService {
     }
 
     @Override
-    public CryptoCurrencyEntity createNewCryptoCurrency(String name, BigDecimal rate, String code) {
+    public void createNewCryptoCurrency(String name, BigDecimal rate, String code) {
         CryptoCurrencyEntity cryptoCurrencyEntity = new CryptoCurrencyEntity(name, rate, code);
-        return cryptoCurrencyRepository.save(cryptoCurrencyEntity);
+        cryptoCurrencyRepository.save(cryptoCurrencyEntity);
     }
 
     @Override
-    public void saveFromExternalApi(CryptoCurrencyEntity c) {
-        cryptoCurrencyRepository.save(c);
+    public void saveFromExternalApi(CryptoCurrencyEntity cryptoCurrency) {
+        cryptoCurrencyRepository.save(cryptoCurrency);
     }
 
-    @Override
-    public List<CryptoCurrencyResponseDTO> findAllByNameContainsIgnoreCaseAndCodeContainsIgnoreCase(String name, String code) {
+    private List<CryptoCurrencyResponseDTO> findAllByNameContainsIgnoreCaseAndCodeContainsIgnoreCase(String name, String code) {
         return cryptoCurrencyRepository.findAllByNameContainsIgnoreCaseAndCodeContainsIgnoreCase(name, code).stream()
                 .map(cryptoCurrencyMapper::toCryptoCurrencyResponseDTO)
                 .toList();
     }
 
-    @Override
-    public List<CryptoCurrencyResponseDTO> findAllByNameContainsIgnoreCase(String name) {
+    private List<CryptoCurrencyResponseDTO> findAllByNameContainsIgnoreCase(String name) {
         return cryptoCurrencyRepository.findAllByNameContainsIgnoreCase(name).stream()
                 .map(cryptoCurrencyMapper::toCryptoCurrencyResponseDTO)
                 .toList();
     }
 
-    @Override
-    public List<CryptoCurrencyResponseDTO> findAllByCodeContainsIgnoreCase(String code) {
+    private List<CryptoCurrencyResponseDTO> findAllByCodeContainsIgnoreCase(String code) {
         return cryptoCurrencyRepository.findAllByCodeContainsIgnoreCase(code).stream()
                 .map(cryptoCurrencyMapper::toCryptoCurrencyResponseDTO)
                 .toList();
     }
 
-    @Override
-    public List<CryptoCurrencyResponseDTO> getAll() {
+    private List<CryptoCurrencyResponseDTO> getAll() {
         return cryptoCurrencyRepository.findAll().stream()
                 .map(cryptoCurrencyMapper::toCryptoCurrencyResponseDTO)
                 .toList();

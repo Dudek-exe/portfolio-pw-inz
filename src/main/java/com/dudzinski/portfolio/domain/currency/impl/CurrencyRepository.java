@@ -10,12 +10,16 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class CurrencyRepository {
+class CurrencyRepository {
 
     private final CurrencyJpaRepository currencyJpaRepository;
 
     CurrencyEntity save(CurrencyEntity currencyEntity) {
         return currencyJpaRepository.save(currencyEntity);
+    }
+
+    Optional<CurrencyEntity> findByCodeIgnoreCase(String code) {
+        return currencyJpaRepository.findByCodeIgnoreCase(code);
     }
 
     Page<CurrencyEntity> findAll(Pageable pageable) {
@@ -34,7 +38,4 @@ public class CurrencyRepository {
         return currencyJpaRepository.findAllByNameContainsIgnoreCaseAndCodeContainsIgnoreCase(name, code, pageable);
     }
 
-    Optional<CurrencyEntity> findByCodeIgnoreCase(String code) {
-        return currencyJpaRepository.findByCodeIgnoreCase(code);
-    }
 }

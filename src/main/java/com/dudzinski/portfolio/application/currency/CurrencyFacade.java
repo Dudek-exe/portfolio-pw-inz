@@ -2,7 +2,6 @@ package com.dudzinski.portfolio.application.currency;
 
 import com.dudzinski.portfolio.application.currency.dto.CurrencyResponseDTO;
 import com.dudzinski.portfolio.application.currency.dto.NewCurrencyRequestDTO;
-import com.dudzinski.portfolio.domain.currency.CurrencyEntity;
 import com.dudzinski.portfolio.domain.currency.CurrencyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -14,12 +13,11 @@ public class CurrencyFacade {
 
     private final CurrencyService currencyService;
 
-    public CurrencyEntity createNewCurrency(NewCurrencyRequestDTO dto) {
-        return currencyService.createNewCurrency(dto.getName(), dto.getRate(), dto.getCode());
+    public void createNewCurrency(NewCurrencyRequestDTO dto) {
+        currencyService.createNewCurrency(dto.getName(), dto.getRate(), dto.getCode());
     }
 
     public Page<CurrencyResponseDTO> findAll(String name, String code, int start, int end) {
         return currencyService.findAll(name, code, start, end);
     }
-
 }

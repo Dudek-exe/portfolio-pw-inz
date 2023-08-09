@@ -9,16 +9,8 @@ public interface CryptoCurrencyService {
 
     List<CryptoCurrencyResponseDTO> findAll(String name, String code);
 
-    CryptoCurrencyEntity createNewCryptoCurrency(String name, BigDecimal rate, String code);
+    void createNewCryptoCurrency(String name, BigDecimal rate, String code);
 
     void saveFromExternalApi(CryptoCurrencyEntity c);
-
-    List<CryptoCurrencyResponseDTO> findAllByNameContainsIgnoreCaseAndCodeContainsIgnoreCase(String name, String code);
-
-    List<CryptoCurrencyResponseDTO> findAllByNameContainsIgnoreCase(String name);
-
-    List<CryptoCurrencyResponseDTO> findAllByCodeContainsIgnoreCase(String code);
-
-    List<CryptoCurrencyResponseDTO> getAll();
 
 }

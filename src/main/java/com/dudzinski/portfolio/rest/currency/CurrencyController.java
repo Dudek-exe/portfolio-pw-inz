@@ -3,10 +3,10 @@ package com.dudzinski.portfolio.rest.currency;
 import com.dudzinski.portfolio.application.currency.CurrencyFacade;
 import com.dudzinski.portfolio.application.currency.dto.CurrencyResponseDTO;
 import com.dudzinski.portfolio.application.currency.dto.NewCurrencyRequestDTO;
-import com.dudzinski.portfolio.domain.currency.CurrencyEntity;
 import com.dudzinski.portfolio.rest.ControllerConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,8 +30,8 @@ class CurrencyController {
     @PreAuthorize("hasAnyRole(T(com.dudzinski.portfolio.domain.client.RoleType).BASIC_USER.name(),"
             + "T(com.dudzinski.portfolio.domain.client.RoleType).ADMIN.name())")
     @PostMapping
-    CurrencyEntity save(@RequestBody NewCurrencyRequestDTO newCurrencyRequestDTO) {
-        return currencyFacade.createNewCurrency(newCurrencyRequestDTO);
+    ResponseEntity<Void> save(@RequestBody NewCurrencyRequestDTO newCurrencyRequestDTO) {
+        currencyFacade.createNewCurrency(newCurrencyRequestDTO);
+        return ResponseEntity.noContent().build();
     }
-
 }
