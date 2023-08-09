@@ -1,7 +1,6 @@
-package com.dudzinski.portfolio.job.coinpapricacryptocurrencyrates;
+package com.dudzinski.portfolio.job.coinpaprica;
 
 public interface CoinPapricaTask {
 
     void updateCoinPapricaRates();
-
 }

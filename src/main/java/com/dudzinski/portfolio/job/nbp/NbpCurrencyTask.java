@@ -1,4 +1,4 @@
-package com.dudzinski.portfolio.job.nbpcurrencyrates;
+package com.dudzinski.portfolio.job.nbp;
 
 
 public interface NbpCurrencyTask {

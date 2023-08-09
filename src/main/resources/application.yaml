@@ -9,3 +9,12 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create-drop
+
+portfolio-app:
+  jobs:
+    nbp:
+      enabled: true
+    metal-api:
+      enabled: false
+    coin-paprica:
+      enabled: true
