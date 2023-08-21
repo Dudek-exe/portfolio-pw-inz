@@ -30,6 +30,10 @@ public class MovableEntity {
     @Column(name = "model")
     private String model;
 
+    @Column(name = "type")
+    @Enumerated(EnumType.STRING)
+    private MovableType type;
+
     @Column(name = "productionYear")
     private int productionYear;
 

@@ -7,6 +7,7 @@ import com.dudzinski.portfolio.application.movable.dto.MovableUpdateDTO;
 import com.dudzinski.portfolio.application.movable.mapper.MovableMapper;
 import com.dudzinski.portfolio.domain.movable.MovableEntity;
 import com.dudzinski.portfolio.domain.movable.MovableService;
+import com.dudzinski.portfolio.domain.movable.MovableType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -47,6 +48,7 @@ class MovableServiceImpl implements MovableService {
         movable.setProductionYear(dto.getProductionYear());
         movable.setPurchasePrice(dto.getPurchasePrice());
         movable.setEstimatedValue(dto.getEstimatedValue());
+        movable.setType(MovableType.from(dto.getMovableType()));
 
         return movableMapper.toMovableSearchResultDTO(movableRepository.save(movable));
     }

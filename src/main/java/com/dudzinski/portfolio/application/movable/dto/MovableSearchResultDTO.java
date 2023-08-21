@@ -21,6 +21,8 @@ public class MovableSearchResultDTO {
 
     private String model;
 
+    private String movableType;
+
     private int productionYear;
 
     private BigDecimal purchasePrice;

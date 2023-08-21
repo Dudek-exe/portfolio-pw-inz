@@ -23,4 +23,6 @@ public class MovablePersistDTO {
 
     private int productionYear;
 
+    private String movableType;
+
 }

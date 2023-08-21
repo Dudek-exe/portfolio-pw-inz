@@ -23,4 +23,5 @@ public class MovableUpdateDTO {
 
     private int productionYear;
 
+    private String movableType;
 }
