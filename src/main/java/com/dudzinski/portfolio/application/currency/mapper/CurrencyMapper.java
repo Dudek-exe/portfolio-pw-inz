@@ -1,6 +1,6 @@
 package com.dudzinski.portfolio.application.currency.mapper;
 
-import com.dudzinski.portfolio.application.currency.dto.CurrencyResponseDTO;
+import com.dudzinski.portfolio.application.currency.dto.CurrencySearchResultDTO;
 import com.dudzinski.portfolio.domain.currency.CurrencyEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -12,7 +12,7 @@ import java.time.LocalDate;
 public interface CurrencyMapper {
 
     @Mapping(target = "date", source = "date", qualifiedByName = "toStringDate")
-    CurrencyResponseDTO toCurrencyResponseDTO(CurrencyEntity currencyEntity);
+    CurrencySearchResultDTO toCurrencySearchResultDTO(CurrencyEntity currencyEntity);
 
     @Named("toStringDate")
     default String toStringDate(LocalDate localDate) {

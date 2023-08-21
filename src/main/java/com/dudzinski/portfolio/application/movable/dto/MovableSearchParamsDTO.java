@@ -1,4 +1,4 @@
-package com.dudzinski.portfolio.application.car.dto;
+package com.dudzinski.portfolio.application.movable.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,7 +10,7 @@ import org.springframework.data.domain.Pageable;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CarSearchParamsDTO {
+public class MovableSearchParamsDTO {
 
     private String name;
 

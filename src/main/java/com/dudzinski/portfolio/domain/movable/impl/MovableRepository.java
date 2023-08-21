@@ -1,8 +1,8 @@
-package com.dudzinski.portfolio.domain.car.impl;
+package com.dudzinski.portfolio.domain.movable.impl;
 
-import com.dudzinski.portfolio.application.car.dto.CarSearchParamsDTO;
-import com.dudzinski.portfolio.domain.car.CarEntity;
-import com.dudzinski.portfolio.domain.car.CarEntity_;
+import com.dudzinski.portfolio.application.movable.dto.MovableSearchParamsDTO;
+import com.dudzinski.portfolio.domain.movable.MovableEntity;
+import com.dudzinski.portfolio.domain.movable.MovableEntity_;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
@@ -17,30 +17,30 @@ import java.util.stream.Stream;
 
 @Repository
 @RequiredArgsConstructor
-class CarRepository {
+class MovableRepository {
 
-    private final CarJpaRepository carJpaRepository;
+    private final MovableJpaRepository movableJpaRepository;
 
-    public CarEntity save(CarEntity car) {
-        return carJpaRepository.save(car);
+    public MovableEntity save(MovableEntity movable) {
+        return movableJpaRepository.save(movable);
     }
 
-    Page<CarEntity> findAll(Specification<CarEntity> spec, Pageable pageable) {
-        return carJpaRepository.findAll(spec, pageable);
+    Page<MovableEntity> findAll(Specification<MovableEntity> spec, Pageable pageable) {
+        return movableJpaRepository.findAll(spec, pageable);
     }
 
-    public CarEntity getById(Long carId) {
-        return carJpaRepository.findById(carId)
+    public MovableEntity getById(Long movableId) {
+        return movableJpaRepository.findById(movableId)
                 .orElseThrow(EntityNotFoundException::new);
     }
 
-    public Specification<CarEntity> buildSpecification(CarSearchParamsDTO dto) {
+    public Specification<MovableEntity> buildSpecification(MovableSearchParamsDTO dto) {
         return (root, query, cb) -> {
             Optional<Predicate> namePredicate = Optional.ofNullable(dto.getName())
-                    .map(name -> cb.like(cb.lower(root.get(CarEntity_.name)), name.toLowerCase()));
+                    .map(name -> cb.like(cb.lower(root.get(MovableEntity_.name)), name.toLowerCase()));
 
             Optional<Predicate> brandPredicate = Optional.ofNullable(dto.getBrand())
-                    .map(brand -> cb.like(cb.lower(root.get(CarEntity_.brand)), brand.toLowerCase()));
+                    .map(brand -> cb.like(cb.lower(root.get(MovableEntity_.brand)), brand.toLowerCase()));
 
             List<Predicate> predicates = Stream.of(
                             namePredicate,
@@ -54,7 +54,7 @@ class CarRepository {
         };
     }
 
-    public void delete(Long carId) {
-        carJpaRepository.deleteById(carId);
+    public void delete(Long movableId) {
+        movableJpaRepository.deleteById(movableId);
     }
 }

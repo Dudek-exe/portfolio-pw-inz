@@ -18,10 +18,6 @@ public class CurrencySearchParamsDTO {
 
     private String code;
 
-    private int start;
-
-    private int end;
-
     private LocalDate dateFrom;
 
     private LocalDate dateTo;

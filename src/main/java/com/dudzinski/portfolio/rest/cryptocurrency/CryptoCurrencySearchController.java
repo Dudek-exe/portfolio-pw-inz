@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 
+import static com.dudzinski.portfolio.rest.cryptocurrency.CryptoCurrencyControllerConstants.SEARCH_RESOURCE_CRYPTO_CURRENCY;
+
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "cryptoCurrencySearch")
+@RequestMapping(value = SEARCH_RESOURCE_CRYPTO_CURRENCY)
 class CryptoCurrencySearchController {
 
     private final CryptoCurrencyFacade cryptoCurrencyFacade;

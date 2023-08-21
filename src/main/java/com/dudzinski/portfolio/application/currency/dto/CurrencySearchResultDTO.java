@@ -1,4 +1,4 @@
-package com.dudzinski.portfolio.application.car.dto;
+package com.dudzinski.portfolio.application.currency.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,19 +11,16 @@ import java.math.BigDecimal;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CarSearchResultDTO {
+public class CurrencySearchResultDTO {
 
     private Long id;
 
     private String name;
 
-    private String brand;
+    private BigDecimal rate;
 
-    private String model;
+    private String code;
 
-    private int productionYear;
+    private String date;
 
-    private BigDecimal purchasePrice;
-
-    private BigDecimal estimatedValue;
 }

@@ -1,4 +1,4 @@
-package com.dudzinski.portfolio.domain.car;
+package com.dudzinski.portfolio.domain.movable;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -12,8 +12,8 @@ import java.math.BigDecimal;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "t_car")
-public class CarEntity {
+@Table(name = "t_movable")
+public class MovableEntity {
 
     @Id
     @Setter(AccessLevel.PRIVATE)

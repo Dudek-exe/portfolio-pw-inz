@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+import static com.dudzinski.portfolio.rest.cryptocurrency.CryptoCurrencyControllerConstants.DETAILS_RESOURCE_CRYPTO_CURRENCY;
+
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "cryptoCurrencyDetails")
+@RequestMapping(value = DETAILS_RESOURCE_CRYPTO_CURRENCY)
 class CryptoCurrencyDetailsController {
 
     private final CryptoCurrencyFacade cryptoCurrencyFacade;
