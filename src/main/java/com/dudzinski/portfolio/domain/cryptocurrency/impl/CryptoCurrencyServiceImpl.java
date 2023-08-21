@@ -1,17 +1,22 @@
 package com.dudzinski.portfolio.domain.cryptocurrency.impl;
 
-import com.dudzinski.portfolio.application.cryptocurrency.dto.CryptoCurrencyResponseDTO;
+import com.dudzinski.portfolio.application.cryptocurrency.dto.CryptoCurrencyDetailsParamsDTO;
+import com.dudzinski.portfolio.application.cryptocurrency.dto.CryptoCurrencyDetailsResultDTO;
 import com.dudzinski.portfolio.application.cryptocurrency.dto.CryptoCurrencySearchParamsDTO;
+import com.dudzinski.portfolio.application.cryptocurrency.dto.CryptoCurrencySearchResultDTO;
 import com.dudzinski.portfolio.application.cryptocurrency.mapper.CryptoCurrencyMapper;
 import com.dudzinski.portfolio.domain.cryptocurrency.CryptoCurrencyEntity;
 import com.dudzinski.portfolio.domain.cryptocurrency.CryptoCurrencyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.util.Objects;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 @Service
 @RequiredArgsConstructor
@@ -20,31 +25,19 @@ class CryptoCurrencyServiceImpl implements CryptoCurrencyService {
     private final CryptoCurrencyRepository cryptoCurrencyRepository;
     private final CryptoCurrencyMapper cryptoCurrencyMapper;
 
-    @Override
-    public Page<CryptoCurrencyResponseDTO> findAll(CryptoCurrencySearchParamsDTO searchParamsDTO) {
-
-        if (Objects.isNull(searchParamsDTO.getName()) && Objects.isNull(searchParamsDTO.getCode())) {
-            return cryptoCurrencyRepository.findAll(searchParamsDTO.getPageable())
-                    .map(cryptoCurrencyMapper::toCryptoCurrencyResponseDTO);
-
-        }
-        if (Objects.isNull(searchParamsDTO.getName())) {
-            return findAllByCodeContainsIgnoreCase(searchParamsDTO.getCode(), searchParamsDTO.getPageable());
-        }
-        if (Objects.isNull(searchParamsDTO.getCode())) {
-            return findAllByNameContainsIgnoreCase(searchParamsDTO.getName(), searchParamsDTO.getPageable());
-        }
-        return findAllByNameContainsIgnoreCaseAndCodeContainsIgnoreCase(
-                searchParamsDTO.getName(),
-                searchParamsDTO.getCode(),
-                searchParamsDTO.getPageable()
-        );
+    private static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
+        Map<Object, Boolean> seen = new ConcurrentHashMap<>();
+        return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
     }
 
     @Override
-    public void createNewCryptoCurrency(String name, BigDecimal rate, String code) {
-        CryptoCurrencyEntity cryptoCurrencyEntity = new CryptoCurrencyEntity(name, rate, code);
-        cryptoCurrencyRepository.save(cryptoCurrencyEntity);
+    public Page<CryptoCurrencySearchResultDTO> search(CryptoCurrencySearchParamsDTO searchParamsDTO) {
+
+        return cryptoCurrencyRepository.findAll(
+                        cryptoCurrencyRepository.buildSpecification(searchParamsDTO),
+                        searchParamsDTO.getPageable()
+                )
+                .map(cryptoCurrencyMapper::toCryptoCurrencySearchResultDTO);
     }
 
     @Override
@@ -52,18 +45,16 @@ class CryptoCurrencyServiceImpl implements CryptoCurrencyService {
         cryptoCurrencyRepository.save(cryptoCurrency);
     }
 
-    private Page<CryptoCurrencyResponseDTO> findAllByNameContainsIgnoreCaseAndCodeContainsIgnoreCase(String name, String code, Pageable pageable) {
-        return cryptoCurrencyRepository.findAllByNameContainsIgnoreCaseAndCodeContainsIgnoreCase(name, code, pageable)
-                .map(cryptoCurrencyMapper::toCryptoCurrencyResponseDTO);
-    }
+    @Override
+    public List<CryptoCurrencyDetailsResultDTO> getDetails(CryptoCurrencyDetailsParamsDTO searchParamsDTO) {
+        List<CryptoCurrencyEntity> cryptoCurrencies = cryptoCurrencyRepository.findAll(cryptoCurrencyRepository.buildSpecification(searchParamsDTO))
+                .stream()
+                .sorted(Comparator.comparing(CryptoCurrencyEntity::getDate).reversed())
+                .filter(distinctByKey(CryptoCurrencyEntity::getName))
+                .toList();
 
-    private Page<CryptoCurrencyResponseDTO> findAllByNameContainsIgnoreCase(String name, Pageable pageable) {
-        return cryptoCurrencyRepository.findAllByNameContainsIgnoreCase(name, pageable)
-                .map(cryptoCurrencyMapper::toCryptoCurrencyResponseDTO);
-    }
-
-    private Page<CryptoCurrencyResponseDTO> findAllByCodeContainsIgnoreCase(String code, Pageable pageable) {
-        return cryptoCurrencyRepository.findAllByCodeContainsIgnoreCase(code, pageable)
-                .map(cryptoCurrencyMapper::toCryptoCurrencyResponseDTO);
+        return cryptoCurrencies.stream()
+                .map(cryptoCurrencyMapper::toCryptoCurrencyDetailsResultDTO)
+                .toList();
     }
 }

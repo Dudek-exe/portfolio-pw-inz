@@ -1,40 +1,41 @@
 package com.dudzinski.portfolio.domain.car;
 
-import com.dudzinski.portfolio.domain.client.ClientEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @Entity
 @Table(name = "t_car")
 public class CarEntity {
+
     @Id
+    @Setter(AccessLevel.PRIVATE)
+    @Column(name = "id", unique = true, nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "brand")
     private String brand;
+
+    @Column(name = "model")
     private String model;
-    private String bodyType;
+
+    @Column(name = "productionYear")
     private int productionYear;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
-    private ClientEntity owner;
+    @Column(name = "purchasePrice")
+    private BigDecimal purchasePrice;
 
-    public CarEntity(String brand,
-                     String model,
-                     String bodyType,
-                     int productionYear,
-                     ClientEntity owner) {
-        this.brand = brand;
-        this.model = model;
-        this.bodyType = bodyType;
-        this.productionYear = productionYear;
-        this.owner = owner;
-    }
-
+    @Column(name = "estimatedValue")
+    private BigDecimal estimatedValue;
 }

@@ -23,7 +23,6 @@ public class AssetController {
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     List<NewAssetResponse> getAll(@RequestParam(required = false) String name, @AuthenticationPrincipal String externalId) {
-        System.out.println("External id usera w get All assets " + externalId);
         if (name == null) {
             return assetService.getAll();
         } else {

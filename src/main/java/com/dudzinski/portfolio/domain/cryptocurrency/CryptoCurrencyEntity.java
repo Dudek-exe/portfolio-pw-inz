@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Getter
@@ -30,6 +31,27 @@ public class CryptoCurrencyEntity {
 
     @Column(name = "code")
     private String code;
+
+    @Column(name = "date")
+    private LocalDateTime date;
+
+    @Column(name = "pc_15m")
+    private Double pc15m;
+
+    @Column(name = "pc_30m")
+    private Double pc30m;
+
+    @Column(name = "pc_1h")
+    private Double pc1h;
+
+    @Column(name = "pc_6h")
+    private Double pc6h;
+
+    @Column(name = "pc_12h")
+    private Double pc12h;
+
+    @Column(name = "pc_1d")
+    private Double pc1d;
 
     public CryptoCurrencyEntity(String name, BigDecimal rate, String code) {
         this.name = name;

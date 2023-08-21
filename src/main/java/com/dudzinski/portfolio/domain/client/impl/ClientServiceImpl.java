@@ -55,4 +55,9 @@ class ClientServiceImpl implements ClientService {
         clientRepository.save(newUser);
     }
 
+    @Override
+    public boolean isPresentByLogin(String login) {
+        return clientRepository.findByLogin(login).isPresent();
+    }
+
 }

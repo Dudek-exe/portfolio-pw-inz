@@ -11,4 +11,6 @@ public interface ClientService {
     void register(String login, String password);
 
     void createNewUser(NewClientDTO client, RoleType roleType);
+
+    boolean isPresentByLogin(String login);
 }

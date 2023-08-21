@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CryptoCurrencyResponseDTO {
+public class CryptoCurrencySearchResultDTO {
 
     private Long id;
 
@@ -20,5 +20,7 @@ public class CryptoCurrencyResponseDTO {
     private BigDecimal rate;
 
     private String code;
+
+    private String date;
 
 }

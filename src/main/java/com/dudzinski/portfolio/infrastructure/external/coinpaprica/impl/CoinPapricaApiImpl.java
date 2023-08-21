@@ -34,5 +34,4 @@ public class CoinPapricaApiImpl implements CoinPapricaApi {
                     .forEach(cryptoCurrencyService::saveFromExternalApi);
         }
     }
-
 }

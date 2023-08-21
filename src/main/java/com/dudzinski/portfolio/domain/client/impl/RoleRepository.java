@@ -21,7 +21,6 @@ public class RoleRepository {
         return roleJpaRepository.findByName(name);
     }
 
-
     public RoleEntity save(RoleEntity role) {
         return roleJpaRepository.save(role);
     }

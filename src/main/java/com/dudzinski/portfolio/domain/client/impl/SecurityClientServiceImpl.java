@@ -28,7 +28,7 @@ public class SecurityClientServiceImpl implements SecurityClientService {
 
     @Override
     public CustomUserDetail loadUserByUsername(String s) throws UsernameNotFoundException {
-        ClientEntity clientEntity = clientRepository.findByLogin(s);
+        ClientEntity clientEntity = clientRepository.getByLogin(s);
         return new CustomUserDetail(clientEntity.getLogin(), clientEntity.getPassword(), getAuthority(clientEntity), clientEntity.getExternalId());
     }
 

@@ -1,14 +1,20 @@
 package com.dudzinski.portfolio.domain.car;
 
-import com.dudzinski.portfolio.domain.client.ClientEntity;
-
-import java.util.List;
+import com.dudzinski.portfolio.application.car.dto.CarPersistDTO;
+import com.dudzinski.portfolio.application.car.dto.CarSearchParamsDTO;
+import com.dudzinski.portfolio.application.car.dto.CarSearchResultDTO;
+import com.dudzinski.portfolio.application.car.dto.CarUpdateDTO;
+import org.springframework.data.domain.Page;
 
 public interface CarService {
 
-    CarEntity createNewCar(String brand, String model, String bodyType, int productionYear, ClientEntity clientEntity);
+    CarEntity persistCar(CarPersistDTO dto);
 
-    List<CarEntity> getAll();
+    Page<CarSearchResultDTO> search(CarSearchParamsDTO dto);
 
-    List<CarEntity> getAllByBrand(String brand);
+    CarSearchResultDTO getById(Long carId);
+
+    CarSearchResultDTO update(Long carId, CarUpdateDTO dto);
+
+    void delete(Long carId);
 }

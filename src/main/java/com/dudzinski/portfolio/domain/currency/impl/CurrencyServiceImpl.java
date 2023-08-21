@@ -23,15 +23,6 @@ class CurrencyServiceImpl implements CurrencyService {
     private final CurrencyMapper currencyMapper;
 
     @Override
-    public void createNewCurrency(String name,
-                                  String rate,
-                                  String code,
-                                  LocalDate date) {
-        CurrencyEntity newCurrencyEntity = new CurrencyEntity(name, new BigDecimal(rate), code, date);
-        currencyRepository.save(newCurrencyEntity);
-    }
-
-    @Override
     public Page<CurrencyResponseDTO> findAll(CurrencySearchParamsDTO currencySearchParamsDTO) {
 
         if (Objects.isNull(currencySearchParamsDTO.getName()) && Objects.isNull(currencySearchParamsDTO.getCode())) {

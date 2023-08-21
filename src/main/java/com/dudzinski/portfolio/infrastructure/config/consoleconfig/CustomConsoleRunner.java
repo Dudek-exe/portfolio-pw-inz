@@ -16,7 +16,6 @@ public class CustomConsoleRunner implements CommandLineRunner {
 
     private static final String NEW_USER_CREATED_INFO = "New default %s created";
     private static final String NEW_USER_CREATING_INFO = "%s account not found, creating new default account";
-    private static final String NEW_USER_CREATING_ERROR = "Error while creating %s user";
     private static final String ADMIN_STRING = "ADMIN";
     private static final String BASIC_USER_STRING = "USER";
     ClientService clientService;
@@ -62,6 +61,9 @@ public class CustomConsoleRunner implements CommandLineRunner {
 
     private void setUpDefaultAdminAccount() {
         String adminUsername = "admin";
+        if (clientService.isPresentByLogin(adminUsername)) {
+            return;
+        }
         log.info(String.format(NEW_USER_CREATING_INFO, ADMIN_STRING));
         NewClientDTO newAdminRequest = NewClientDTO.builder()
                 .externalId("111")
@@ -77,13 +79,17 @@ public class CustomConsoleRunner implements CommandLineRunner {
     }
 
     private void setUpDefaultUserAccount() {
+        String userNameLogin = "User1";
+        if (clientService.isPresentByLogin(userNameLogin)) {
+            return;
+        }
         log.info(String.format(NEW_USER_CREATING_INFO, BASIC_USER_STRING));
         NewClientDTO newUserRequest = NewClientDTO.builder()
                 .externalId("222")
                 .name("Marek")
                 .surname("Dudzinski")
                 .email("marekBasicUser@gmail.pl")
-                .username("User1")
+                .username(userNameLogin)
                 .phoneNumber("123456789")
                 .password("qwerty")
                 .build();

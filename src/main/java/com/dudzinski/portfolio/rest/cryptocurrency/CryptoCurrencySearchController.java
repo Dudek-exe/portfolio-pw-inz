@@ -1,8 +1,8 @@
-package com.dudzinski.portfolio.rest.currency;
+package com.dudzinski.portfolio.rest.cryptocurrency;
 
-import com.dudzinski.portfolio.application.currency.CurrencyFacade;
-import com.dudzinski.portfolio.application.currency.dto.CurrencyResponseDTO;
-import com.dudzinski.portfolio.application.currency.dto.CurrencySearchParamsDTO;
+import com.dudzinski.portfolio.application.cryptocurrency.CryptoCurrencyFacade;
+import com.dudzinski.portfolio.application.cryptocurrency.dto.CryptoCurrencySearchParamsDTO;
+import com.dudzinski.portfolio.application.cryptocurrency.dto.CryptoCurrencySearchResultDTO;
 import com.dudzinski.portfolio.infrastructure.util.PageableUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -16,24 +16,23 @@ import java.time.LocalDate;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = CurrencyControllerConstants.RESOURCE_CURRENCY)
-class CurrencyController {
+@RequestMapping(value = "cryptoCurrencySearch")
+class CryptoCurrencySearchController {
 
-    final CurrencyFacade currencyFacade;
+    private final CryptoCurrencyFacade cryptoCurrencyFacade;
 
     @PreAuthorize("hasAnyRole(T(com.dudzinski.portfolio.domain.client.RoleType).BASIC_USER.name(),"
             + "T(com.dudzinski.portfolio.domain.client.RoleType).ADMIN.name())")
     @GetMapping
-    Page<CurrencyResponseDTO> getAll(@RequestParam(required = false) String name,
-                                     @RequestParam(required = false) String code,
-                                     @RequestParam(name = "_start") int start,
-                                     @RequestParam(name = "_end") int end,
-                                     @RequestParam(name = "_order") String order,
-                                     @RequestParam(name = "_sort") String sort,
-                                     @RequestParam(required = false) LocalDate dateFrom,
-                                     @RequestParam(required = false) LocalDate dateTo) {
-
-        return currencyFacade.search(
+    Page<CryptoCurrencySearchResultDTO> search(@RequestParam(required = false) String name,
+                                               @RequestParam(required = false) String code,
+                                               @RequestParam(name = "_start") int start,
+                                               @RequestParam(name = "_end") int end,
+                                               @RequestParam(name = "_order") String order,
+                                               @RequestParam(name = "_sort") String sort,
+                                               @RequestParam(required = false) LocalDate dateFrom,
+                                               @RequestParam(required = false) LocalDate dateTo) {
+        return cryptoCurrencyFacade.search(
                 wrapSearchParams(
                         name,
                         code,
@@ -47,7 +46,7 @@ class CurrencyController {
         );
     }
 
-    private CurrencySearchParamsDTO wrapSearchParams(
+    private CryptoCurrencySearchParamsDTO wrapSearchParams(
             String name,
             String code,
             int start,
@@ -56,11 +55,9 @@ class CurrencyController {
             String sort,
             LocalDate dateFrom,
             LocalDate dateTo) {
-        return new CurrencySearchParamsDTO(
+        return new CryptoCurrencySearchParamsDTO(
                 name,
                 code,
-                start,
-                end,
                 dateFrom,
                 dateTo,
                 PageableUtils.preparePageable(start, end, sort, order)

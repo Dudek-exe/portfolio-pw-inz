@@ -1,37 +1,59 @@
 package com.dudzinski.portfolio.domain.car.impl;
 
+import com.dudzinski.portfolio.application.car.dto.CarPersistDTO;
+import com.dudzinski.portfolio.application.car.dto.CarSearchParamsDTO;
+import com.dudzinski.portfolio.application.car.dto.CarSearchResultDTO;
+import com.dudzinski.portfolio.application.car.dto.CarUpdateDTO;
+import com.dudzinski.portfolio.application.car.mapper.CarMapper;
 import com.dudzinski.portfolio.domain.car.CarEntity;
 import com.dudzinski.portfolio.domain.car.CarService;
-import com.dudzinski.portfolio.domain.client.ClientEntity;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
+@RequiredArgsConstructor
 class CarServiceImpl implements CarService {
 
     private final CarRepository carRepository;
+    private final CarMapper carMapper;
 
-    @Autowired
-    CarServiceImpl(CarRepository carRepository) {
-        this.carRepository = carRepository;
+    @Override
+    public CarEntity persistCar(CarPersistDTO dto) {
+        return carRepository.save(carMapper.toEntity(dto));
     }
 
     @Override
-    public CarEntity createNewCar(String brand, String model, String bodyType, int productionYear, ClientEntity clientEntity) {
-        CarEntity carEntity = new CarEntity(brand, model, bodyType, productionYear, clientEntity);
-        return carRepository.save(carEntity);
+    public Page<CarSearchResultDTO> search(CarSearchParamsDTO searchParamsDTO) {
+
+        return carRepository.findAll(
+                        carRepository.buildSpecification(searchParamsDTO),
+                        searchParamsDTO.getPageable()
+                )
+                .map(carMapper::toCarSearchResultDTO);
     }
 
     @Override
-    public List<CarEntity> getAll() {
-        return carRepository.findAll();
+    public CarSearchResultDTO getById(Long carId) {
+        return carMapper.toCarSearchResultDTO(carRepository.getById(carId));
     }
 
     @Override
-    public List<CarEntity> getAllByBrand(String brand) {
-        return carRepository.findAllByBrand(brand);
+    public CarSearchResultDTO update(Long carId, CarUpdateDTO dto) {
+        CarEntity car = carRepository.getById(carId);
+        car.setName(dto.getName());
+        car.setBrand(dto.getBrand());
+        car.setModel(dto.getModel());
+        car.setProductionYear(dto.getProductionYear());
+        car.setPurchasePrice(dto.getPurchasePrice());
+        car.setEstimatedValue(dto.getEstimatedValue());
+
+        return carMapper.toCarSearchResultDTO(carRepository.save(car));
+    }
+
+    @Override
+    public void delete(Long carId) {
+        carRepository.delete(carId);
     }
 
 }
