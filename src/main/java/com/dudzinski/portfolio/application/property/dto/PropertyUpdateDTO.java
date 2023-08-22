@@ -1,4 +1,4 @@
-package com.dudzinski.portfolio.application.movable.dto;
+package com.dudzinski.portfolio.application.property.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,13 +10,13 @@ import java.time.LocalDate;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MovableUpdateDTO {
+public class PropertyUpdateDTO {
 
     private String name;
 
-    private String brand;
+    private String address;
 
-    private String model;
+    private Double area;
 
     private BigDecimal purchasePrice;
 
@@ -24,7 +24,5 @@ public class MovableUpdateDTO {
 
     private BigDecimal estimatedValue;
 
-    private int productionYear;
-
-    private String movableType;
+    private String propertyType;
 }

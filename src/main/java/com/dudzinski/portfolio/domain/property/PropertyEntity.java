@@ -1,4 +1,4 @@
-package com.dudzinski.portfolio.domain.movable;
+package com.dudzinski.portfolio.domain.property;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -13,8 +13,8 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "t_movable")
-public class MovableEntity {
+@Table(name = "t_property")
+public class PropertyEntity {
 
     @Id
     @Setter(AccessLevel.PRIVATE)
@@ -25,18 +25,15 @@ public class MovableEntity {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "brand")
-    private String brand;
+    @Column(name = "address")
+    private String address;
 
-    @Column(name = "model")
-    private String model;
+    @Column(name = "area")
+    private Double area;
 
     @Column(name = "type")
     @Enumerated(EnumType.STRING)
-    private MovableType type;
-
-    @Column(name = "productionYear")
-    private int productionYear;
+    private PropertyType type;
 
     @Column(name = "purchase_date")
     private LocalDate purchaseDate;
@@ -44,6 +41,6 @@ public class MovableEntity {
     @Column(name = "purchasePrice")
     private BigDecimal purchasePrice;
 
-    @Column(name = "estimated_value")
+    @Column(name = "estimatedValue")
     private BigDecimal estimatedValue;
 }

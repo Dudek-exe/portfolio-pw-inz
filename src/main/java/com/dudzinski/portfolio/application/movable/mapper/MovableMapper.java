@@ -8,12 +8,15 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
+import java.time.LocalDate;
+
 @Mapper(componentModel = "spring")
 public interface MovableMapper {
 
     @Mapping(target = "type", source = "movableType", qualifiedByName = "toEnumType")
     MovableEntity toEntity(MovablePersistDTO dto);
 
+    @Mapping(target = "purchaseDate", source = "purchaseDate", qualifiedByName = "toStringDate")
     @Mapping(target = "movableType", source = "type", qualifiedByName = "toStringType")
     MovableSearchResultDTO toMovableSearchResultDTO(MovableEntity entity);
 
@@ -27,4 +30,8 @@ public interface MovableMapper {
         return type.getDescription();
     }
 
+    @Named("toStringDate")
+    default String toStringDate(LocalDate localDate) {
+        return localDate.toString();
+    }
 }

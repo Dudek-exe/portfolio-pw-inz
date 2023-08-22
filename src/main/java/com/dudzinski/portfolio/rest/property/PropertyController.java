@@ -1,10 +1,10 @@
-package com.dudzinski.portfolio.rest.movable;
+package com.dudzinski.portfolio.rest.property;
 
-import com.dudzinski.portfolio.application.movable.MovableFacade;
-import com.dudzinski.portfolio.application.movable.dto.MovablePersistDTO;
-import com.dudzinski.portfolio.application.movable.dto.MovableSearchParamsDTO;
-import com.dudzinski.portfolio.application.movable.dto.MovableSearchResultDTO;
-import com.dudzinski.portfolio.application.movable.dto.MovableUpdateDTO;
+import com.dudzinski.portfolio.application.property.PropertyFacade;
+import com.dudzinski.portfolio.application.property.dto.PropertyPersistDTO;
+import com.dudzinski.portfolio.application.property.dto.PropertySearchParamsDTO;
+import com.dudzinski.portfolio.application.property.dto.PropertySearchResultDTO;
+import com.dudzinski.portfolio.application.property.dto.PropertyUpdateDTO;
 import com.dudzinski.portfolio.infrastructure.util.HTTPVoidWrapperDTO;
 import com.dudzinski.portfolio.infrastructure.util.PageableUtils;
 import lombok.RequiredArgsConstructor;
@@ -15,23 +15,21 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = MovableControllerConstants.RESOURCE_CURRENCY)
-public class MovableController {
+@RequestMapping(value = PropertyControllerConstants.RESOURCE_CURRENCY)
+public class PropertyController {
 
-    private final MovableFacade movableFacade;
+    private final PropertyFacade propertyFacade;
 
     @PreAuthorize("hasAnyRole(T(com.dudzinski.portfolio.domain.client.RoleType).BASIC_USER.name(),"
             + "T(com.dudzinski.portfolio.domain.client.RoleType).ADMIN.name())")
     @GetMapping
-    Page<MovableSearchResultDTO> search(@RequestParam(required = false) String name,
-                                        @RequestParam(required = false) String brand,
-                                        @RequestParam(name = "_start") int start,
-                                        @RequestParam(name = "_end") int end,
-                                        @RequestParam(name = "_order") String order,
-                                        @RequestParam(name = "_sort") String sort) {
-        return movableFacade.search(wrapSearchParams(
+    Page<PropertySearchResultDTO> search(@RequestParam(required = false) String name,
+                                         @RequestParam(name = "_start") int start,
+                                         @RequestParam(name = "_end") int end,
+                                         @RequestParam(name = "_order") String order,
+                                         @RequestParam(name = "_sort") String sort) {
+        return propertyFacade.search(wrapSearchParams(
                         name,
-                        brand,
                         start,
                         end,
                         order,
@@ -42,46 +40,43 @@ public class MovableController {
 
     @PreAuthorize("hasAnyRole(T(com.dudzinski.portfolio.domain.client.RoleType).BASIC_USER.name(),"
             + "T(com.dudzinski.portfolio.domain.client.RoleType).ADMIN.name())")
-    @GetMapping("/{movableId}")
-    MovableSearchResultDTO get(@PathVariable Long movableId) {
-        return movableFacade.getById(movableId);
-
+    @GetMapping("/{propertyId}")
+    PropertySearchResultDTO get(@PathVariable Long propertyId) {
+        return propertyFacade.getById(propertyId);
     }
 
     @PreAuthorize("hasAnyRole(T(com.dudzinski.portfolio.domain.client.RoleType).BASIC_USER.name(),"
             + "T(com.dudzinski.portfolio.domain.client.RoleType).ADMIN.name())")
-    @PutMapping("/{movableId}")
-    MovableSearchResultDTO update(@PathVariable Long movableId,
-                                  @RequestBody MovableUpdateDTO dto) {
-        return movableFacade.update(movableId, dto);
+    @PutMapping("/{propertyId}")
+    PropertySearchResultDTO update(@PathVariable Long propertyId,
+                                   @RequestBody PropertyUpdateDTO dto) {
+        return propertyFacade.update(propertyId, dto);
     }
 
     @PreAuthorize("hasAnyRole(T(com.dudzinski.portfolio.domain.client.RoleType).BASIC_USER.name(),"
             + "T(com.dudzinski.portfolio.domain.client.RoleType).ADMIN.name())")
-    @DeleteMapping("/{movableId}")
-    ResponseEntity<HTTPVoidWrapperDTO> delete(@PathVariable Long movableId) {
-        movableFacade.delete(movableId);
+    @DeleteMapping("/{propertyId}")
+    ResponseEntity<HTTPVoidWrapperDTO> delete(@PathVariable Long propertyId) {
+        propertyFacade.delete(propertyId);
         return ResponseEntity.ok(new HTTPVoidWrapperDTO("Success"));
     }
 
     @PreAuthorize("hasAnyRole(T(com.dudzinski.portfolio.domain.client.RoleType).BASIC_USER.name(),"
             + "T(com.dudzinski.portfolio.domain.client.RoleType).ADMIN.name())")
     @PostMapping
-    ResponseEntity<HTTPVoidWrapperDTO> save(@RequestBody MovablePersistDTO dto) {
-        movableFacade.persist(dto);
+    ResponseEntity<HTTPVoidWrapperDTO> save(@RequestBody PropertyPersistDTO dto) {
+        propertyFacade.persist(dto);
         return ResponseEntity.ok(new HTTPVoidWrapperDTO("Success"));
     }
 
-    private MovableSearchParamsDTO wrapSearchParams(
+    private PropertySearchParamsDTO wrapSearchParams(
             String name,
-            String brand,
             int start,
             int end,
             String order,
             String sort) {
-        return new MovableSearchParamsDTO(
+        return new PropertySearchParamsDTO(
                 name,
-                brand,
                 PageableUtils.preparePageable(start, end, sort, order)
         );
     }

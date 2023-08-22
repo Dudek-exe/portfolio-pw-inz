@@ -1,4 +1,4 @@
-package com.dudzinski.portfolio.application.movable.dto;
+package com.dudzinski.portfolio.application.property.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,19 +11,17 @@ import java.math.BigDecimal;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MovableSearchResultDTO {
+public class PropertySearchResultDTO {
 
     private Long id;
 
     private String name;
 
-    private String brand;
+    private String address;
 
-    private String model;
+    private Double area;
 
-    private String movableType;
-
-    private int productionYear;
+    private String propertyType;
 
     private BigDecimal purchasePrice;
 

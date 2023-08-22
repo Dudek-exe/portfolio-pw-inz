@@ -47,6 +47,7 @@ class MovableServiceImpl implements MovableService {
         movable.setModel(dto.getModel());
         movable.setProductionYear(dto.getProductionYear());
         movable.setPurchasePrice(dto.getPurchasePrice());
+        movable.setPurchaseDate(dto.getPurchaseDate());
         movable.setEstimatedValue(dto.getEstimatedValue());
         movable.setType(MovableType.from(dto.getMovableType()));
 

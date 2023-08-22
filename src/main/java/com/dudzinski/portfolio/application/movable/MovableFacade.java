@@ -4,7 +4,6 @@ import com.dudzinski.portfolio.application.movable.dto.MovablePersistDTO;
 import com.dudzinski.portfolio.application.movable.dto.MovableSearchParamsDTO;
 import com.dudzinski.portfolio.application.movable.dto.MovableSearchResultDTO;
 import com.dudzinski.portfolio.application.movable.dto.MovableUpdateDTO;
-import com.dudzinski.portfolio.domain.movable.MovableEntity;
 import com.dudzinski.portfolio.domain.movable.MovableService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -16,8 +15,8 @@ public class MovableFacade {
 
     private final MovableService movableServiceImpl;
 
-    public MovableEntity persist(MovablePersistDTO dto) {
-        return movableServiceImpl.persist(dto);
+    public void persist(MovablePersistDTO dto) {
+        movableServiceImpl.persist(dto);
     }
 
     public Page<MovableSearchResultDTO> search(MovableSearchParamsDTO dto) {
