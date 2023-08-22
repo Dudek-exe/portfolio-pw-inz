@@ -3,6 +3,7 @@ package com.dudzinski.portfolio.domain.portfolio.impl;
 import com.dudzinski.portfolio.application.portfolio.dto.PortfolioSearchParamsDTO;
 import com.dudzinski.portfolio.domain.portfolio.PortfolioEntity;
 import com.dudzinski.portfolio.domain.portfolio.PortfolioEntity_;
+import com.dudzinski.portfolio.domain.util.SecurityUtils;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
@@ -39,8 +40,12 @@ class PortfolioRepository {
             Optional<Predicate> namePredicate = Optional.ofNullable(dto.getName())
                     .map(name -> cb.like(cb.lower(root.get(PortfolioEntity_.name)), name.toLowerCase()));
 
+            Optional<Predicate> securityPredicate = Optional.of(
+                    cb.equal(root.get(PortfolioEntity_.usernameOwner), SecurityUtils.getLoggedUserLogin()));
+
             List<Predicate> predicates = Stream.of(
-                            namePredicate
+                            namePredicate,
+                            securityPredicate
                     )
                     .filter(Optional::isPresent)
                     .map(Optional::get)

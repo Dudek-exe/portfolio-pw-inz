@@ -16,8 +16,4 @@ public class ClientFacade {
         return clientService.login(loginRequestDTO);
     }
 
-    public void register(String login, String password) {
-        clientService.register(login, password);
-    }
-
 }

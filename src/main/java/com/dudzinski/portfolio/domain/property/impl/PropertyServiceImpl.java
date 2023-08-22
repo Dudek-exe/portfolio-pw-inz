@@ -8,6 +8,7 @@ import com.dudzinski.portfolio.application.property.mapper.PropertyMapper;
 import com.dudzinski.portfolio.domain.property.PropertyEntity;
 import com.dudzinski.portfolio.domain.property.PropertyService;
 import com.dudzinski.portfolio.domain.property.PropertyType;
+import com.dudzinski.portfolio.domain.util.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,9 @@ class PropertyServiceImpl implements PropertyService {
 
     @Override
     public PropertyEntity persist(PropertyPersistDTO dto) {
-        return propertyRepository.save(propertyMapper.toEntity(dto));
+        PropertyEntity property = propertyMapper.toEntity(dto);
+        property.setUsernameOwner(SecurityUtils.getLoggedUserLogin());
+        return propertyRepository.save(property);
     }
 
     @Override

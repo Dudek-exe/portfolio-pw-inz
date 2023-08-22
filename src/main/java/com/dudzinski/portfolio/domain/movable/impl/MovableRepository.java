@@ -3,6 +3,7 @@ package com.dudzinski.portfolio.domain.movable.impl;
 import com.dudzinski.portfolio.application.movable.dto.MovableSearchParamsDTO;
 import com.dudzinski.portfolio.domain.movable.MovableEntity;
 import com.dudzinski.portfolio.domain.movable.MovableEntity_;
+import com.dudzinski.portfolio.domain.util.SecurityUtils;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
@@ -42,9 +43,13 @@ class MovableRepository {
             Optional<Predicate> brandPredicate = Optional.ofNullable(dto.getBrand())
                     .map(brand -> cb.like(cb.lower(root.get(MovableEntity_.brand)), brand.toLowerCase()));
 
+            Optional<Predicate> securityPredicate = Optional.of(
+                    cb.equal(root.get(MovableEntity_.usernameOwner), SecurityUtils.getLoggedUserLogin()));
+
             List<Predicate> predicates = Stream.of(
                             namePredicate,
-                            brandPredicate
+                            brandPredicate,
+                            securityPredicate
                     )
                     .filter(Optional::isPresent)
                     .map(Optional::get)

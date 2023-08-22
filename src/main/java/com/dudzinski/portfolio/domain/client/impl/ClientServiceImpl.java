@@ -44,11 +44,6 @@ class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public void register(String login, String password) {
-        //TODO IMPLEMENT ME
-    }
-
-    @Override
     public void createNewUser(NewClientDTO client, RoleType roleType) {
         ClientEntity newUser = ClientMapper.mapNewUserRequestToUser(client, bcryptEncoder);
         newUser.addRole(roleRepository.getByName(roleType));

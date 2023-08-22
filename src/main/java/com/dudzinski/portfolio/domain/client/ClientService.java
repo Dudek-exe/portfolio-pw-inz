@@ -8,8 +8,6 @@ public interface ClientService {
 
     LoginResponseDTO login(ClientLoginRequestDTO requestDTO);
 
-    void register(String login, String password);
-
     void createNewUser(NewClientDTO client, RoleType roleType);
 
     boolean isPresentByLogin(String login);

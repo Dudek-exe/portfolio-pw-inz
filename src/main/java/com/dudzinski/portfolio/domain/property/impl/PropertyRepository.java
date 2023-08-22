@@ -3,6 +3,7 @@ package com.dudzinski.portfolio.domain.property.impl;
 import com.dudzinski.portfolio.application.property.dto.PropertySearchParamsDTO;
 import com.dudzinski.portfolio.domain.property.PropertyEntity;
 import com.dudzinski.portfolio.domain.property.PropertyEntity_;
+import com.dudzinski.portfolio.domain.util.SecurityUtils;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
@@ -39,8 +40,12 @@ class PropertyRepository {
             Optional<Predicate> namePredicate = Optional.ofNullable(dto.getName())
                     .map(name -> cb.like(cb.lower(root.get(PropertyEntity_.name)), name.toLowerCase()));
 
+            Optional<Predicate> securityPredicate = Optional.of(
+                    cb.equal(root.get(PropertyEntity_.usernameOwner), SecurityUtils.getLoggedUserLogin()));
+
             List<Predicate> predicates = Stream.of(
-                            namePredicate
+                            namePredicate,
+                            securityPredicate
                     )
                     .filter(Optional::isPresent)
                     .map(Optional::get)

@@ -2,7 +2,6 @@ package com.dudzinski.portfolio.rest.client;
 
 import com.dudzinski.portfolio.application.client.ClientFacade;
 import com.dudzinski.portfolio.application.client.dto.ClientLoginRequestDTO;
-import com.dudzinski.portfolio.application.client.dto.ClientRegisterRequestDTO;
 import com.dudzinski.portfolio.domain.client.dto.LoginResponseDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,11 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 class ClientController {
 
     private final ClientFacade clientFacade;
-
-    @PostMapping("register")
-    void register(@RequestBody @Valid ClientRegisterRequestDTO requestDTO) {
-        clientFacade.register(requestDTO.getLogin(), requestDTO.getPassword());
-    }
 
     @PostMapping
     public LoginResponseDTO login(@RequestBody @Valid ClientLoginRequestDTO requestDTO) {

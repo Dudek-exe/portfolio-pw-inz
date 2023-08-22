@@ -21,6 +21,9 @@ public class PortfolioEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "username_owner")
+    private String usernameOwner;
+
     @Column(name = "name")
     private String name;
 

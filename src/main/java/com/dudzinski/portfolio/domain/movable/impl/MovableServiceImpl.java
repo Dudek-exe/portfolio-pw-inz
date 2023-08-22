@@ -8,6 +8,7 @@ import com.dudzinski.portfolio.application.movable.mapper.MovableMapper;
 import com.dudzinski.portfolio.domain.movable.MovableEntity;
 import com.dudzinski.portfolio.domain.movable.MovableService;
 import com.dudzinski.portfolio.domain.movable.MovableType;
+import com.dudzinski.portfolio.domain.util.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,10 @@ class MovableServiceImpl implements MovableService {
 
     @Override
     public MovableEntity persist(MovablePersistDTO dto) {
-        return movableRepository.save(movableMapper.toEntity(dto));
+
+        MovableEntity movable = movableMapper.toEntity(dto);
+        movable.setUsernameOwner(SecurityUtils.getLoggedUserLogin());
+        return movableRepository.save(movable);
     }
 
     @Override

@@ -10,12 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 @Component
 @Slf4j
 public class CustomConsoleRunner implements CommandLineRunner {
 
     private static final String NEW_USER_CREATED_INFO = "New default %s created";
-    private static final String NEW_USER_CREATING_INFO = "%s account not found, creating new default account";
+    private static final String NEW_USER_CREATING_INFO = "%s account not found, creating new account";
     private static final String ADMIN_STRING = "ADMIN";
     private static final String BASIC_USER_STRING = "USER";
     ClientService clientService;
@@ -30,7 +32,9 @@ public class CustomConsoleRunner implements CommandLineRunner {
     @Override
     public void run(String... args) {
         setUpDefaultRoles();
-        setUpDefaultAdminAccount();
+        persistUser("admin", "qwerty", "Marek", "Dudzinski");
+        persistUser("user", "qwerty", "Robert", "Maklowicz");
+        persistUser("promotor", "silnehaslo01", "Marcin", "Kopyt");
         setUpDefaultUserAccount();
     }
 
@@ -59,23 +63,22 @@ public class CustomConsoleRunner implements CommandLineRunner {
         }
     }
 
-    private void setUpDefaultAdminAccount() {
-        String adminUsername = "admin";
-        if (clientService.isPresentByLogin(adminUsername)) {
+    private void persistUser(String username, String password, String imie, String nazwisko) {
+        if (clientService.isPresentByLogin(username)) {
             return;
         }
-        log.info(String.format(NEW_USER_CREATING_INFO, ADMIN_STRING));
-        NewClientDTO newAdminRequest = NewClientDTO.builder()
-                .externalId("111")
-                .name("Marek")
-                .surname("Dudzinski")
-                .email("marekAdminUser@gmail.pl")
-                .username(adminUsername)
+        log.info(String.format(NEW_USER_CREATING_INFO, username));
+        NewClientDTO newUserRequest = NewClientDTO.builder()
+                .externalId(UUID.randomUUID().toString())
+                .name(imie)
+                .surname(nazwisko)
+                .email(UUID.randomUUID() + "@gmail.com")
+                .username(username)
+                .password(password)
                 .phoneNumber("987654321")
-                .password("qwerty")
                 .build();
         log.info(String.format(NEW_USER_CREATED_INFO, ADMIN_STRING));
-        clientService.createNewUser(newAdminRequest, RoleType.ADMIN);
+        clientService.createNewUser(newUserRequest, RoleType.ADMIN);
     }
 
     private void setUpDefaultUserAccount() {

@@ -20,8 +20,9 @@ public class AssetController {
         this.assetService = assetServiceImpl;
     }
 
+    @PreAuthorize("hasAnyRole(T(com.dudzinski.portfolio.domain.client.RoleType).BASIC_USER.name(),"
+            + "T(com.dudzinski.portfolio.domain.client.RoleType).ADMIN.name())")
     @GetMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     List<NewAssetResponse> getAll(@RequestParam(required = false) String name, @AuthenticationPrincipal String externalId) {
         if (name == null) {
             return assetService.getAll();
@@ -31,6 +32,8 @@ public class AssetController {
 
     }
 
+    @PreAuthorize("hasAnyRole(T(com.dudzinski.portfolio.domain.client.RoleType).BASIC_USER.name(),"
+            + "T(com.dudzinski.portfolio.domain.client.RoleType).ADMIN.name())")
     @PostMapping
     AssetEntity save(@RequestBody NewAssetRequest newAssetRequest) {
         return assetService.createNewAsset(newAssetRequest.getName(), newAssetRequest.getPrice());

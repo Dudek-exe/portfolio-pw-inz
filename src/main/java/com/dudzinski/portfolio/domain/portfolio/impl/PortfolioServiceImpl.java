@@ -8,6 +8,7 @@ import com.dudzinski.portfolio.application.portfolio.mapper.PortfolioMapper;
 import com.dudzinski.portfolio.domain.portfolio.PortfolioEntity;
 import com.dudzinski.portfolio.domain.portfolio.PortfolioService;
 import com.dudzinski.portfolio.domain.portfolio.PortfolioType;
+import com.dudzinski.portfolio.domain.util.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,9 @@ class PortfolioServiceImpl implements PortfolioService {
 
     @Override
     public PortfolioEntity persist(PortfolioPersistDTO dto) {
+
+        PortfolioEntity portfolio = portfolioMapper.toEntity(dto);
+        portfolio.setUsernameOwner(SecurityUtils.getLoggedUserLogin());
         return portfolioRepository.save(portfolioMapper.toEntity(dto));
     }
 
@@ -43,6 +47,7 @@ class PortfolioServiceImpl implements PortfolioService {
 
     @Override
     public PortfolioSearchResultDTO update(Long portfolioId, PortfolioUpdateDTO dto) {
+
         PortfolioEntity portfolio = portfolioRepository.getById(portfolioId);
         portfolio.setName(dto.getName());
         portfolio.setQuantity(dto.getQuantity());
@@ -57,4 +62,5 @@ class PortfolioServiceImpl implements PortfolioService {
     public void delete(Long portfolioId) {
         portfolioRepository.delete(portfolioId);
     }
+
 }
