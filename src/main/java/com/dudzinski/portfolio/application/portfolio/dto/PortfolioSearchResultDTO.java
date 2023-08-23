@@ -22,4 +22,6 @@ public class PortfolioSearchResultDTO {
     private Double quantity;
 
     private BigDecimal price;
+
+    private BigDecimal totalPrice;
 }

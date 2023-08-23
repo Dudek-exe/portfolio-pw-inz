@@ -27,7 +27,8 @@ class PortfolioServiceImpl implements PortfolioService {
 
         PortfolioEntity portfolio = portfolioMapper.toEntity(dto);
         portfolio.setUsernameOwner(SecurityUtils.getLoggedUserLogin());
-        return portfolioRepository.save(portfolioMapper.toEntity(dto));
+        portfolio.setTotalPrice(dto.getPrice().multiply(BigDecimal.valueOf(dto.getQuantity())));
+        return portfolioRepository.save(portfolio);
     }
 
     @Override

@@ -9,10 +9,9 @@ import lombok.ToString;
 @RequiredArgsConstructor
 public enum PortfolioType {
 
-    APARTMENT("Mieszkanie"),
-    HOUSE("Dom"),
-    LAND("Działka"),
-    SERVICE("Lokal Usługowy"),
+    CURRENCY("Waluta"),
+    CRYPTOCURRENCY("Kryptowaluta"),
+    ASSET("Akcje"),
     OTHERS("Inne");
 
     private final String description;

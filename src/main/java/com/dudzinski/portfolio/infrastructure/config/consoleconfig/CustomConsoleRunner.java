@@ -77,7 +77,7 @@ public class CustomConsoleRunner implements CommandLineRunner {
                 .password(password)
                 .phoneNumber("987654321")
                 .build();
-        log.info(String.format(NEW_USER_CREATED_INFO, ADMIN_STRING));
+        log.info(String.format(NEW_USER_CREATED_INFO, username));
         clientService.createNewUser(newUserRequest, RoleType.ADMIN);
     }
 
