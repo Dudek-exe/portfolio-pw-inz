@@ -6,8 +6,6 @@ import java.util.List;
 
 public interface MetalService {
 
-    MetalEntity createNewMetal(String name, Double price);
-
     void updateMetal(String name, Double price);
 
     List<NewMetalResponse> getAll();

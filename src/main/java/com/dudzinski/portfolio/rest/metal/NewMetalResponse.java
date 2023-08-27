@@ -11,11 +11,19 @@ import java.math.BigDecimal;
 public class NewMetalResponse {
 
     private final Long id;
+    private final String code;
     private final String name;
+    private final String date;
     private final BigDecimal price;
 
     public static NewMetalResponse from(MetalEntity metalEntity) {
-        return new NewMetalResponse(metalEntity.getId(), metalEntity.getName(), metalEntity.getPrice());
+        return new NewMetalResponse(
+                metalEntity.getId(),
+                metalEntity.getCode(),
+                metalEntity.getName(),
+                metalEntity.getDate().toString(),
+                metalEntity.getPrice()
+        );
     }
 
 }

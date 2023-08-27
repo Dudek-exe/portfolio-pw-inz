@@ -7,8 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -17,23 +17,9 @@ class MetalServiceImpl implements MetalService {
     private final MetalRepository metalRepository;
 
     @Override
-    public MetalEntity createNewMetal(String name, Double price) {
-        MetalEntity newMetalEntity = new MetalEntity(name, BigDecimal.valueOf(price));
-        return metalRepository.save(newMetalEntity);
-    }
-
-    @Override
-    public void updateMetal(String name, Double price) {
-        Optional<MetalEntity> optionalMetal = metalRepository.findByNameIgnoreCase(name);
-
-        if (optionalMetal.isPresent()) {
-            MetalEntity metalEntity = optionalMetal.get();
-            metalEntity.setPrice(BigDecimal.valueOf(price));
-            metalRepository.save(metalEntity);
-        } else {
-            MetalEntity newMetalEntity = new MetalEntity(name, BigDecimal.valueOf(price));
-            metalRepository.save(newMetalEntity);
-        }
+    public void updateMetal(String code, Double price) {
+        MetalEntity newMetalEntity = new MetalEntity(getName(code), code, LocalDateTime.now(), BigDecimal.valueOf(price));
+        metalRepository.save(newMetalEntity);
     }
 
     @Override
@@ -41,5 +27,15 @@ class MetalServiceImpl implements MetalService {
         return metalRepository.findAll().stream()
                 .map(NewMetalResponse::from)
                 .toList();
+    }
+
+    private String getName(String code) {
+        return switch (code) {
+            case "XAG" -> "Srebro";
+            case "XAU" -> "Złoto";
+            case "XPD" -> "Pallad";
+            case "XPT" -> "Platyna";
+            default -> null;
+        };
     }
 }

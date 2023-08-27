@@ -2,18 +2,18 @@ package com.dudzinski.portfolio.domain.metal;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
+@Table(name = "t_metal")
 public class MetalEntity {
 
     @Id
@@ -24,11 +24,19 @@ public class MetalEntity {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "code")
+    private String code;
+
+    @Column(name = "date")
+    private LocalDateTime date;
+
     @Column(name = "price", precision = 15, scale = 4)
     private BigDecimal price;
 
-    public MetalEntity(String name, BigDecimal price) {
+    public MetalEntity(String name, String code, LocalDateTime date, BigDecimal price) {
         this.name = name;
+        this.code = code;
+        this.date = date;
         this.price = price;
     }
 }
